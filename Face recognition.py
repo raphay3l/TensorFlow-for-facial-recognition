@@ -8,8 +8,7 @@ I implement TensorFlow to show how a deep convoluted network can be trained usin
 The example dataset is a set of faces from SKLEARN module. 
 
 A simple 1-layered weights network with biases is used and achieves a >85% accuracy. 
-A convoluted deeper network with 2 hidden layers achieves near 96% accuracy - implementation of which I leave to the viewer.
-
+A convoluted deeper network with 2 hidden layers achieves near 96% accuracy - experimentation of which I leave to the viewer.
 """
 
 
