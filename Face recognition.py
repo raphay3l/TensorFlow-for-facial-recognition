@@ -1,13 +1,16 @@
-# Author: Rafal Jankowski
-# UDACITY Nanodegree Machine Learning Engineer
-# Deep Learning with TensorFlow
-# 15 APRIL 2016
+""" 
+Author: Rafal Jankowski
+UDACITY Nanodegree Machine Learning Engineer
+Deep Learning with TensorFlow
+15 APRIL 2016
 
+I implement TensorFlow to show how a deep convoluted network can be trained using stochastic gradient descent. 
+The example dataset is a set of faces from SKLEARN module. 
 
-# --------------- INFO ---------------
-# In the below I implement basic TensorFlow functionality to show how quickly a
-# forecast using a single-layered network with stochastic gradient descent is completed
-# >80% of accuracy is achieved with just one layer and biases
+A simple 1-layered weights network with biases is used and achieves a >85% accuracy. 
+A convoluted deeper network with 2 hidden layers achieves near 96% accuracy - implementation of which I leave to the viewer.
+
+"""
 
 
 from __future__ import print_function
@@ -22,9 +25,6 @@ from sklearn.cross_validation import train_test_split
 from sklearn.datasets import fetch_lfw_people
 from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import RandomizedPCA
-
-
-
 
 # download ready facial data
 lfw_people = fetch_lfw_people(min_faces_per_person=70, resize=0.4)
@@ -41,10 +41,8 @@ target_names = lfw_people.target_names
 num_labels = target_names.shape[0]
 image_size = len(train_dataset[0])
 
-
 # split into a training and testing set
 train_dataset, test_dataset, train_labels, test_labels = train_test_split(X, y, test_size=0.15, random_state=42)
-
 
 # explore the data a little
 n = 20
@@ -63,9 +61,7 @@ def plot_gallery(images, titles, h, w, n_row=3, n_col=4):
         plt.yticks(())
 eigenface_titles = ["eigenface %d" % i for i in range(eigenvals.shape[0])]
 plot_gallery(eigenvals, eigenface_titles, h, w)
-
 plt.show()
-
 
 #for stochastic grad descent use subsets for training
 train_subset = 100
@@ -75,7 +71,6 @@ batch_size = 100
 def accuracy(predictions, labels):
     return (100.0 * np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
             / predictions.shape[0])
-
 
 def reformat(dataset, labels):
     dataset = dataset.reshape((-1, image_size)).astype(np.float32)
@@ -91,11 +86,9 @@ with graph.as_default():
     tf_train_dataset = tf.placeholder(tf.float32, shape=(batch_size, image_size))
     tf_train_labels = tf.placeholder(tf.float32, shape=(batch_size, num_labels))
     tf_test_dataset = tf.constant(test_dataset)
-    
         # use truncated normal distribution to initialise the weights
     weights = tf.Variable(tf.truncated_normal([image_size, num_labels]))
     biases = tf.Variable(tf.zeros([num_labels]))
-                                
         # take advantage of TensorFlows softmax & cross entropy combo to define the loss function
     logits = tf.matmul(tf_train_dataset, weights) + biases
     
@@ -103,19 +96,15 @@ with graph.as_default():
     #hidden1 = tf.nn.relu(tf.matmul(image_size, weights) + biases)
     #hidden2 = tf.nn.relu(tf.matmul(hidden1, weights) + biases)
     #logits = tf.matmul(hidden2, weights) + biases
-    
     loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels))
     # start off with gradient descent
     optimizer = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
-                                            
       # report the accuracy here
     train_prediction = tf.nn.softmax(logits)
     test_prediction = tf.nn.softmax(tf.matmul(tf_test_dataset, weights) + biases)
-
-
+    
 # run the model
 num_steps = 1000
-
 with tf.Session(graph=graph) as session:
     tf.initialize_all_variables().run()
     for step in range(num_steps):
