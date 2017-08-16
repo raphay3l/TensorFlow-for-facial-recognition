@@ -2,13 +2,11 @@
 Author: Rafal Jankowski
 UDACITY Nanodegree Machine Learning Engineer
 Deep Learning with TensorFlow
-15 APRIL 2016
+15 MARCH 2016
 
-I implement TensorFlow to show how a deep convoluted network can be trained using stochastic gradient descent. 
+I recently moved from Keras to Tensorflow and it's awesome. I make a very simple network to show how easy Tensorflow is to use. 
 The example dataset is a set of faces from SKLEARN module. 
 
-A simple 1-layered weights network with biases is used and achieves a >85% accuracy. 
-A convoluted deeper network with 2 hidden layers achieves near 96% accuracy - experimentation of which I leave to the viewer.
 """
 
 
